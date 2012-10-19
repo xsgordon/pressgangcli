@@ -33,9 +33,6 @@ The *pressgang-get* script gets the XML for a topic from the Pressgang CCMS. Out
  * *--revision | -r* - Specifies a specific revision to retrieve or, when combined with the *--diff* or *-d* options, the revisions to perform a diff operation on. To specify two revisions, separate them with a colon (:).
  * *TOPIC* - Specifies the identifier of the topic to be retrieved. This must be either the numeric identifier of the topic or its short URL title.
   
-  http://skynet.usersys.redhat.com:8080/TopicIndex/seam/resource/rest/1/topic/get/json/10007
-  https://skynet.usersys.redhat.com:8443/TopicIndex/seam/resource/rest/1/topic/get/json/10007?expand={"branches":[{"trunk":{"name:"revisions"}}]}
-
 ## pressgang-put ##
 
 The *pressgang-put* script updates a topic in the Pressgang CCMS.  On successful completion skynet-put displays the topic identifier and the revision information for the change.
