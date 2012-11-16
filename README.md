@@ -1,5 +1,14 @@
 # Pressgang CCMS Command Line Tools #
 
+# Building the Pressgang CCMS Command Line Tools #
+
+$ git clone git@github.com:houseofzeus/pressgangcli.git
+$ cd pressgangcli/
+$ ./autogen.sh
+$ make rpms
+
+# Using the Pressgang CCMS Command Line Tools #
+
 ## pressgang-config ##
 
 The *pressgang-config* command is used to set configuration keys in the ~/.pressgangcli.conf file. These configuration keys are used by the other scripts when interacting with Pressgang.
