@@ -51,10 +51,15 @@ def main(argv=None):
         config = PressgangConfig("%s/.pressgangcli.conf" %os.path.expanduser("~"))
         topic_server = TopicServer(config.get_location())
         topic = Topic(topic_server, args.TOPIC).set_xml(xml)
+        
+        # Note that failure is considered non-fatal, just return the response 
+        # code for the calling script/user to deal with.
         if topic.status_code == 200:
             print "Saved topic %s, revision %s." % (args.TOPIC, topic.json["revision"])
         else:
-            raise Error("HTTP status %s." % str(topic.status_code))
+            print "HTTP status %s." % str(topic.status_code)
+            
+        return topic.status_code
     except Usage, err:
         print >>sys.stderr, err.msg
         print >>sys.stderr, "For help and usage information use the --help argument."
