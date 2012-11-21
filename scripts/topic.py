@@ -49,18 +49,24 @@ class Topic:
     def set_xml(self, xml, title=None):
         payload = {}
         if title is None:
-            payload = {"id" : self._id, "xml" : xml}
+            payload = {"configuredParameters": [ "xml" ], "id" : self._id, "xml" : xml}
         else:
-            payload = {"id" : self._id, "title": title, "xml" : xml}
+            payload = {"configuredParameters": [ "xml" ], "id" : self._id, "title": title, "xml" : xml}
+        
         resp = requests.post(self._srv.get_save_uri(self._id),
                              data=json.dumps(payload),
                              headers={"content-type": "application/json",
                                       "Accept": "application/json"},
                              verify=False)
+
         return resp
 
     def revision(self):
         print ""
 
     def revisions(self):
-        print ""
+        payload = {"branches": [ {"trunk": {"name": "revisions" } } ] }
+        url = "%s?expand=%s" % (self._srv.get_load_uri(self._id), 
+                                json.dumps(payload))
+        resp = requests.get(url, verify=False)
+        return resp.json
