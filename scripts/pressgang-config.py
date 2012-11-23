@@ -4,6 +4,7 @@ import sys
 import argparse
 import os.path
 import ConfigParser
+import codecs
 
 class Usage(Exception):
     def __init__(self, msg):
@@ -153,4 +154,6 @@ def main(argv=None):
 
 
 if __name__ == "__main__":
+    sys.stdout = codecs.getwriter("UTF-8")(sys.stdout)
+    sys.stderr = codecs.getwriter("UTF-8")(sys.stderr)
     sys.exit(main())

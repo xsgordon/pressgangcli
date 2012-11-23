@@ -4,6 +4,8 @@ import sys
 import argparse
 import requests
 import os.path
+import codecs
+
 from topic import Topic
 from topic import TopicServer
 from config import PressgangConfig
@@ -70,4 +72,6 @@ def main(argv=None):
 
 
 if __name__ == "__main__":
+    sys.stdout = codecs.getwriter("UTF-8")(sys.stdout)
+    sys.stderr = codecs.getwriter("UTF-8")(sys.stderr)
     sys.exit(main())
