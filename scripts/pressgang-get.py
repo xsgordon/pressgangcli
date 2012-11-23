@@ -34,11 +34,8 @@ def parse_args(argv):
                                              "options.", action="store_true")
     parser.add_argument("-H", "--html", help="Instead of returning the topic XML, " +
                                        "returns HTML representation.", action="store_true" )
-#    parser.add_argument("-r", "--revision", help="Specifies a specific revision " +
-#                                                 "to retrieve or, when combined " +
-#                                                 "with the diff argument the " +
-#                                                 "revisions to perform a diff " +
-#                                                 "operation on.", action="store")
+    parser.add_argument("-r", "--revision", help="Specifies a specific revision " +
+                                                 "to retrieve or.", action="store", default=0)
     parser.add_argument("TOPIC", help="Specifies the identifier of the topic to " +
                                       "be retrieved. This must be either the " +
                                       "numeric identifier of the topic or its " +
@@ -58,11 +55,14 @@ def main(argv=None):
         topic_server = TopicServer(config.get_location())
         topic = Topic(topic_server, args.TOPIC)
         if args.json:
-            print topic.get_json()
+            print topic.get_json(revision=int(args.revision))
+            return 0
         elif args.html:
-            print topic.get_html()
+            print topic.get_html(revision=int(args.revision))
+            return 0
         else:
-            print topic.get_xml()
+            print topic.get_xml(revision=int(args.revision))
+            return 0
     except Usage, err:
         print >>sys.stderr, err.msg
         print >>sys.stderr, "For help and usage information use the --help argument."

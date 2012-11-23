@@ -1,5 +1,6 @@
 import requests
 import json
+import urllib
 
 class TopicServer:
 
@@ -32,19 +33,33 @@ class Topic:
         self._srv = server
         self._id = ID
 
-    def get_html(self):
-        json = self.get_json()
-        return json["html"]
+    def get_html(self, revision=0):
+        json = self.get_json(revision=revision)
+        if json is not None:
+            return json["html"]
+        else:
+            return None
 
-    def get_xml(self):
-        json = self.get_json()
-        return json["xml"]
+    def get_xml(self, revision=0):
+        json = self.get_json(revision=revision)
+        if json is not None:
+            return json["xml"]
+        else:
+            return None
 
-    def get_json(self):
-        resp = requests.get(self._srv.get_load_uri(self._id),
-                            verify=False)
-        return resp.json
-        
+    def get_json(self, revision=0):
+        url = self._srv.get_load_uri(self._id)
+        if revision <= 0:
+            resp = requests.get(url, verify=False)
+            return resp.json
+        else:
+            payload = {"branches": [ {"trunk": {"name": "revisions" } } ] }
+            url = "%s?expand=%s" % (url, urllib.quote(json.dumps(payload)))
+            resp = requests.get(url, verify=False)
+            for i in resp.json["revisions"]["items"]:
+                if i["item"]["revision"] == revision:
+                    return i["item"]
+        return None
 
     def set_xml(self, xml, title=None):
         payload = {}
@@ -61,12 +76,3 @@ class Topic:
 
         return resp
 
-    def revision(self):
-        print ""
-
-    def revisions(self):
-        payload = {"branches": [ {"trunk": {"name": "revisions" } } ] }
-        url = "%s?expand=%s" % (self._srv.get_load_uri(self._id), 
-                                json.dumps(payload))
-        resp = requests.get(url, verify=False)
-        return resp.json
