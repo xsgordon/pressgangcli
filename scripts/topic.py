@@ -2,6 +2,7 @@ import requests
 import json
 import urllib
 
+
 class TopicServer:
 
     _base_uri = "https://127.0.0.1:8443/TopicIndex/"
@@ -53,7 +54,7 @@ class Topic:
             resp = requests.get(url, verify=False)
             return resp.json
         else:
-            payload = {"branches": [ {"trunk": {"name": "revisions" } } ] }
+            payload = {"branches": [{"trunk": {"name": "revisions"}}]}
             url = "%s?expand=%s" % (url, urllib.quote(json.dumps(payload)))
             resp = requests.get(url, verify=False)
             for i in resp.json["revisions"]["items"]:
@@ -64,10 +65,15 @@ class Topic:
     def set_xml(self, xml, title=None):
         payload = {}
         if title is None:
-            payload = {"configuredParameters": [ "xml" ], "id" : self._id, "xml" : xml}
+            payload = {"configuredParameters": ["xml"],
+                       "id": self._id,
+                       "xml": xml}
         else:
-            payload = {"configuredParameters": [ "xml" ], "id" : self._id, "title": title, "xml" : xml}
-        
+            payload = {"configuredParameters": ["xml"],
+                       "id": self._id,
+                       "title": title,
+                       "xml": xml}
+
         resp = requests.post(self._srv.get_save_uri(self._id),
                              data=json.dumps(payload),
                              headers={"content-type": "application/json",
@@ -75,4 +81,3 @@ class Topic:
                              verify=False)
 
         return resp
-

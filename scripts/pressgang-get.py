@@ -24,24 +24,20 @@ class Error(Exception):
 def parse_args(argv):
     parser = argparse.ArgumentParser(description="Retrieve a topic from the " +
                                                  "Pressgang CCMS.")
-#    parser.add_argument("-d", "--diff", help="Performs a diff operation between " +
-#                                             "either the specified topic " +
-#                                             "revisions, or the latest revision " +
-#                                             "and its predecessor.",
-#                                             action="store_true")
-    parser.add_argument("-j", "--json", help="Instead of returning the topic XML" +
-                                             ", returns the JSON representation " +
-                                             "of the topic. This option is not " +
-                                             "compatible with the --diff and -d " +
-                                             "options.", action="store_true")
-    parser.add_argument("-H", "--html", help="Instead of returning the topic XML, " +
-                                       "returns HTML representation.", action="store_true" )
-    parser.add_argument("-r", "--revision", help="Specifies a specific revision " +
-                                                 "to retrieve or.", action="store", default=0)
-    parser.add_argument("TOPIC", help="Specifies the identifier of the topic to " +
-                                      "be retrieved. This must be either the " +
-                                      "numeric identifier of the topic or its " +
-                                      "short URL title.")
+    parser.add_argument("-j", "--json", help="Instead of returning the topic" +
+                                             " XML, returns the JSON " +
+                                             "representation of the topic. " +
+                                             "This option is not compatible " +
+                                             "with the --diff and -d options.",
+                        action="store_true")
+    parser.add_argument("-H", "--html", help="Instead of XML returns HTML.",
+                        action="store_true")
+    parser.add_argument("-r", "--revision", help="Specifies a specific " +
+                                                 "revision to retrieve.",
+                        action="store", default=0)
+    parser.add_argument("TOPIC", help="Specifies the identifier of the " +
+                                      "topic to be retrieved. This must be " +
+                                      "the numeric identifier of the topic.")
     args = parser.parse_args()
     return args
 
@@ -51,9 +47,8 @@ def main(argv=None):
         argv = sys.argv
     try:
         args = parse_args(argv)
-        config = PressgangConfig("%s/.pressgangcli.conf" %os.path.expanduser("~"))
-#        if args.diff and args.json:
-#            raise Usage("The --diff and --json arguments are mutually exclusive.")
+        config = PressgangConfig("%s/.pressgangcli.conf" %
+                                 os.path.expanduser("~"))
         topic_server = TopicServer(config.get_location())
         topic = Topic(topic_server, args.TOPIC)
         output = None
@@ -64,7 +59,7 @@ def main(argv=None):
             output = topic.get_html(revision=int(args.revision))
         else:
             output = topic.get_xml(revision=int(args.revision))
-        
+
         if output is None:
             if args.revision != 0:
                 raise Error("No such topic/revision combination exists.")
@@ -76,7 +71,8 @@ def main(argv=None):
 
     except Usage, err:
         print >>sys.stderr, err.msg
-        print >>sys.stderr, "For help and usage information use the --help argument."
+        print >>sys.stderr, ("For help and usage information use the --help " +
+                             "argument.")
         return 2
     except Error, err:
         print >>sys.stderr, err.msg

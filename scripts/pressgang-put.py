@@ -22,14 +22,15 @@ class Error(Exception):
 
 
 def parse_args(argv):
-    parser = argparse.ArgumentParser(description="Create or update a topic in the " +
-                                                 "Pressgang CCMS.")
-    parser.add_argument("-f", "--file", help="Specifies the XML file to save, otherwise reads from standard input.")
+    parser = argparse.ArgumentParser(description="Create or update a topic " +
+                                                 "in the Pressgang CCMS.")
+    parser.add_argument("-f", "--file", help="Specifies the XML file to save" +
+                                             "otherwise reads from standard " +
+                                             "input.")
     parser.add_argument("-t", "--title", help="Specifies title for the topic.")
-    parser.add_argument("TOPIC", help="Specifies the identifier of the topic to " +
-                                      "be updated. This must be either the " +
-                                      "numeric identifier of the topic or its " +
-                                      "short URL title.")
+    parser.add_argument("TOPIC", help="Specifies the identifier of the topic" +
+                                      " to update. This must be the numeric " +
+                                      "identifier of the topic.")
     args = parser.parse_args()
     return args
 
@@ -49,22 +50,25 @@ def main(argv=None):
         while data:
             xml = "%s%s" % (xml, data)
             data = f.readline()
-        
-        config = PressgangConfig("%s/.pressgangcli.conf" %os.path.expanduser("~"))
+
+        config = PressgangConfig("%s/.pressgangcli.conf" %
+                                 os.path.expanduser("~"))
         topic_server = TopicServer(config.get_location())
         topic = Topic(topic_server, args.TOPIC).set_xml(xml)
-        
-        # Note that failure is considered non-fatal, just return the response 
+
+        # Note that failure is considered non-fatal, just return the response
         # code for the calling script/user to deal with.
         if topic.status_code == 200:
-            print "Saved topic %s, revision %s." % (args.TOPIC, topic.json["revision"])
+            print "Saved topic %s, revision %s." % (args.TOPIC,
+                                                    topic.json["revision"])
         else:
             print "HTTP status %s." % str(topic.status_code)
-            
+
         return topic.status_code
     except Usage, err:
         print >>sys.stderr, err.msg
-        print >>sys.stderr, "For help and usage information use the --help argument."
+        print >>sys.stderr, ("For help and usage information use the --help " +
+                            "argument.")
         return 2
     except Error, err:
         print >>sys.stderr, err.msg

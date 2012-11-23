@@ -6,6 +6,7 @@ import os.path
 import ConfigParser
 import codecs
 
+
 class Usage(Exception):
     def __init__(self, msg):
         self.msg = msg
@@ -14,6 +15,7 @@ class Usage(Exception):
 class Error(Exception):
     def __init__(self, msg):
         self.msg = msg
+
 
 def parse_args(argv):
     """
@@ -31,13 +33,15 @@ def parse_args(argv):
 
     return parser.parse_args()
 
+
 def get_config():
     """
     Retrieve existing configuration from user's .pressgangcli.conf file. If it
-    does not exist then check for .skynet-shell-tools as used by earlier 
+    does not exist then check for .skynet-shell-tools as used by earlier
     versions of these tools.
 
-    Returns a dictionary of config keys, or none where no config could be found.
+    Returns a dictionary of config keys, or none where no config could be
+    found.
     """
 
     config_values = {}
@@ -63,7 +67,7 @@ def get_config():
                 continue
             key_split = key.split("=", 1)
             # We don't need the quotes that surround the values,
-            config_values[key_split[0]] = key_split[1][1:len(key_split[1])-2]
+            config_values[key_split[0]] = key_split[1][1:len(key_split[1]) - 2]
         config_translated = {}
         for key, val in config_values.iteritems():
             if(key == "SKYNET_USER"):
@@ -87,13 +91,13 @@ def get_config():
 
 def set_config(new, old=None):
     """
-    Save configuration values to user's .pressgangcli.conf file. Expected 
+    Save configuration values to user's .pressgangcli.conf file. Expected
     parameters are the dictionary of new configuration items and, optionally,
     a dictionary of old configuration options to be used if only a subset of
     values are being set.
 
     Note that if no old configuration options are provided and the new options
-    dictionary does not contain all expected options then an exception will 
+    dictionary does not contain all expected options then an exception will
     result.
     """
     home = os.path.expanduser("~")
@@ -105,34 +109,35 @@ def set_config(new, old=None):
         config.set("Required", "USER", old["USER"])
     else:
         config.set("Required", "USER", new["USER"])
-   
+
     if(new["LOCATION"] is None):
         config.set("Required", "LOCATION", old["LOCATION"])
     else:
         config.set("Required", "LOCATION", new["LOCATION"])
-    
+
     if(new["PUBLIC_DTD"] is None):
         config.set("Required", "PUBLIC_DTD", old["PUBLIC_DTD"])
     else:
         config.set("Required", "PUBLIC_DTD", new["PUBLIC_DTD"])
-    
+
     if(new["SYSTEM_DTD"] is None):
         config.set("Required", "SYSTEM_DTD", old["SYSTEM_DTD"])
     else:
         config.set("Required", "SYSTEM_DTD", new["SYSTEM_DTD"])
-    
+
     if(new["EDITOR"] is None):
         config.set("Required", "EDITOR", old["EDITOR"])
     else:
         config.set("Required", "EDITOR", new["EDITOR"])
-    
+
     with open("%s/.pressgangcli.conf" % home, "wb") as configfile:
         config.write(configfile)
+
 
 def main(argv=None):
     if argv is None:
         argv = sys.argv
-    
+
     try:
         args = parse_args(argv)
 
@@ -146,7 +151,8 @@ def main(argv=None):
 
     except Usage, err:
         print >>sys.stderr, err.msg
-        print >>sys.stderr, "For help and usage information use the --help argument."
+        print >>sys.stderr, ("For help and usage information " +
+                             "use the --help argument.")
         return 2
     except Error, err:
         print >>sys.stderr, err.msg
