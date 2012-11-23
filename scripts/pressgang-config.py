@@ -57,7 +57,7 @@ def get_config():
         config_values["USER"] = config.get("Required", "USER")
         config_values["LOCATION"] = config.get("Required", "LOCATION")
         config_values["PUBLIC_DTD"] = config.get("Required", "PUBLIC_DTD")
-        config_values["SYSTEM_DID"] = config.get("Required", "SYSTEM_DTD")
+        Tconfig_values["SYSTEM_DD"] = config.get("Required", "SYSTEM_DTD")
         config_values["EDITOR"] = config.get("Required", "EDITOR")
     elif(skynet_config_exists):
         f = open("%s/.skynet-shell-tools" % home, "r")
