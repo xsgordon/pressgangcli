@@ -63,10 +63,11 @@ def main(argv=None):
         else:
             output = topic.get_xml(revision=int(args.revision))
         
-        if output is not None:
+        if output is None:
+            raise Error("No such revision exists.")
+        else:
             print output
-
-        return 0
+            return 0
 
     except Usage, err:
         print >>sys.stderr, err.msg
