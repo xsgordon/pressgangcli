@@ -66,7 +66,10 @@ def main(argv=None):
             output = topic.get_xml(revision=int(args.revision))
         
         if output is None:
-            raise Error("No such revision exists.")
+            if args.revision != 0:
+                raise Error("No such topic/revision combination exists.")
+            else:
+                raise Error("No such topic exists.")
         else:
             print output
             return 0
