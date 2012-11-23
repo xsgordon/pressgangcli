@@ -2,10 +2,10 @@
 
 # Building the Pressgang CCMS Command Line Tools #
 
-$ git clone git@github.com:houseofzeus/pressgangcli.git
-$ cd pressgangcli/
-$ ./autogen.sh
-$ make rpms
+    $ git clone git@github.com:houseofzeus/pressgangcli.git
+    $ cd pressgangcli/
+    $ ./autogen.sh
+    $ make rpms
 
 # Using the Pressgang CCMS Command Line Tools #
 
@@ -15,7 +15,7 @@ The *pressgang-config* command is used to set configuration keys in the ~/.press
 
 ### Syntax ###
 
-   pressgang-config [-h] [-u USER] [-l LOCATION] [-p PUBLIC_DTD] [-s SYSTEM_DTD] [-e EDITOR]
+    pressgang-config [-h] [-u USER] [-l LOCATION] [-p PUBLIC_DTD] [-s SYSTEM_DTD] [-e EDITOR]
 
 ### Options ###
 
@@ -48,7 +48,7 @@ The *pressgang-put* script updates a topic in the Pressgang CCMS.  On successful
 
 ### Syntax ###
 
-	pressgang-put [-h] [--title|-t=TITLE] [--file|-f=FILE]  <topic>
+    pressgang-put [-h] [--title|-t=TITLE] [--file|-f=FILE]  <topic>
 
 ### Options ###
 
