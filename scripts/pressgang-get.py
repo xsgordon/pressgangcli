@@ -54,15 +54,20 @@ def main(argv=None):
 #            raise Usage("The --diff and --json arguments are mutually exclusive.")
         topic_server = TopicServer(config.get_location())
         topic = Topic(topic_server, args.TOPIC)
+        output = None
+
         if args.json:
-            print topic.get_json(revision=int(args.revision))
-            return 0
+            output = topic.get_json(revision=int(args.revision))
         elif args.html:
-            print topic.get_html(revision=int(args.revision))
-            return 0
+            output = topic.get_html(revision=int(args.revision))
         else:
-            print topic.get_xml(revision=int(args.revision))
-            return 0
+            output = topic.get_xml(revision=int(args.revision))
+        
+        if output is not None:
+            print output
+
+        return 0
+
     except Usage, err:
         print >>sys.stderr, err.msg
         print >>sys.stderr, "For help and usage information use the --help argument."
