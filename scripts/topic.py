@@ -6,7 +6,7 @@ import urllib
 class TopicServer:
 
     _base_uri = "https://127.0.0.1:8443/TopicIndex/"
-    _get_uri = "seam/resource/rest/1/topic/get/json/"
+    _get_uri = "seam/resource/rest/1/topic/get"
     _put_uri = "seam/resource/rest/1/topic/update/json/"
 
     def __init__(self, uri):
@@ -18,11 +18,25 @@ class TopicServer:
     def get_save_uri(self, ID=None):
         return "%s%s" % (self._base_uri, self._put_uri)
 
-    def get_load_uri(self, ID=None):
-        if ID is None:
-            return "%s%s" % (self._base_uri, self._get_uri)
+    def get_load_uri(self, ID, revision=0, fmt="json"):
+        common_uri = "%s%s/%s" % (self._base_uri, self._get_uri, fmt)
+        if revision == 0:
+            if fmt == "json":
+                return "%s/%s" % (common_uri,
+                                  str(ID))
+            else:
+                return "%s/%s/%s" % (common_uri,
+                                     str(ID), fmt)
         else:
-            return "%s%s%s" % (self._base_uri, self._get_uri, str(ID))
+            if fmt == "json":
+                return "%s/%s/r/%s" % (common_uri,
+                                       str(ID),
+                                       str(revision))
+            else:
+                return "%s/%s/r/%s/%s" % (common_uri,
+                                          str(ID),
+                                          str(revision),
+                                          fmt)
 
 
 class Topic:
@@ -35,32 +49,22 @@ class Topic:
         self._id = ID
 
     def get_html(self, revision=0):
-        json = self.get_json(revision=revision)
-        if json is not None:
-            return json["html"]
-        else:
-            return None
+        url = self._srv.get_load_uri(ID=self._id,
+                                     revision=revision,
+                                     fmt="html")
+        return requests.get(url, verify=False).text
 
     def get_xml(self, revision=0):
-        json = self.get_json(revision=revision)
-        if json is not None:
-            return json["xml"]
-        else:
-            return None
+        url = self._srv.get_load_uri(ID=self._id,
+                                     revision=revision,
+                                     fmt="xml")
+        return requests.get(url, verify=False).text
 
     def get_json(self, revision=0):
-        url = self._srv.get_load_uri(self._id)
-        if revision <= 0:
-            resp = requests.get(url, verify=False)
-            return resp.json
-        else:
-            payload = {"branches": [{"trunk": {"name": "revisions"}}]}
-            url = "%s?expand=%s" % (url, urllib.quote(json.dumps(payload)))
-            resp = requests.get(url, verify=False)
-            for i in resp.json["revisions"]["items"]:
-                if i["item"]["revision"] == revision:
-                    return i["item"]
-        return None
+        url = self._srv.get_load_uri(ID=self._id,
+                                     revision=revision,
+                                     fmt="json")
+        return requests.get(url, verify=False).json
 
     def set_xml(self, xml, title=None):
         payload = {}
