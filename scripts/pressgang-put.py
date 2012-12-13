@@ -59,7 +59,7 @@ def main(argv=None):
         # Note that failure is considered non-fatal, just return the response
         # code for the calling script/user to deal with.
         if topic.status_code == 200:
-            print "Saved topic %s, revision %s." % (args.TOPIC,
+            print "Topic %s, revision %s saved." % (args.TOPIC,
                                                     topic.json["revision"])
         else:
             print "HTTP status %s." % str(topic.status_code)
