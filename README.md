@@ -2,7 +2,7 @@
 
 # Building the Pressgang CCMS Command Line Tools #
 
-    $ git clone git@github.com:houseofzeus/pressgangcli.git
+    $ git clone git://github.com/houseofzeus/pressgangcli.git
     $ cd pressgangcli/
     $ ./autogen.sh
     $ make rpms
@@ -25,6 +25,24 @@ The *pressgang-config* command is used to set configuration keys in the ~/.press
  * *--public_dtd | -p* - Update the PUBLIC_DTD configuration key with the public identifier of the DTD to use for validation.
  * *--system_dtd | -s* - Update the SYSTEM_DTD configuration key with the systen identifier of the DTD to use for validation.
  * *--editor | -e* - Update the EDITOR configuration key with the path to the editor to use for topic manipulation.
+
+## pressgang-edit ##
+
+The *pressgang-edit* command retrieves a specified topic and opens it in a text editor. Once the editor session ends then
+the script checks whether or not the file has changed. If the file has changed it is parsed for XML validity and saved to
+the pressgang server. If the file has not changed the script exits gracefully. If the file has changed but contains invalid
+XML then the editor session is reopened.
+
+### Syntax ###
+
+    pressgang-edit.sh [-h | --help ] [-d | --debug] [-e=EDITOR | --editor=EDITOR ] <TOPICID>
+
+### Options ###
+
+ * *-h | --help*- Display help.
+ * *-d | --debug* - Turn on debug messaging.
+ * *-e=EDITOR | --editor=EDITOR* - Use the specified text editor instead of the editor specified in the configuration file.
+ * *<TOPICID>* - The identifier of the topic to edit.
 
 ## pressgang-get ##
 
