@@ -53,6 +53,8 @@ ln -s %{_datarootdir}/%{name}/pressgang-config.py $RPM_BUILD_ROOT%{_bindir}/pres
 %{_datarootdir}/%{name}
 
 %changelog
+* Tue Jan 25 2013 Stephen Gordon <sgordon@redhat.com> 0.1.6-1
+- Updated endpoint logic for more flexibility.
 * Fri Oct 19 2012 Stephen Gordon <sgordon@redhat.com> 0.1.4-1
 - Rebranded for Pressgang CCMS.
 - Provided put/get/config scripts in Python.

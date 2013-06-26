@@ -5,15 +5,15 @@ import urllib
 
 class TopicServer:
 
-    _base_uri = "https://127.0.0.1:8443/TopicIndex/"
-    _get_uri = "seam/resource/rest/1/topic/get"
-    _put_uri = "seam/resource/rest/1/topic/update/json/"
+    _base_uri = "https://127.0.0.1:8443/"
+    _get_uri = "rest/1/topic/get"
+    _put_uri = "rest/1/topic/update/json/"
 
     def __init__(self, uri):
         self.set_uri(uri)
 
     def set_uri(self, uri):
-        self._base_uri = "%s/TopicIndex/" % uri
+        self._base_uri = "%s/" % uri
 
     def get_save_uri(self, ID=None):
         return "%s%s" % (self._base_uri, self._put_uri)

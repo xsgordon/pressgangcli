@@ -1,4 +1,4 @@
-AC_INIT([pressgangcli], [0.1.5], [sgordon@redhat.com])
+AC_INIT([pressgangcli], [0.1.6], [sgordon@redhat.com])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign -Wno-portability tar-pax])
 
